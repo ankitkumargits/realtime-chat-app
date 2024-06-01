@@ -1,5 +1,6 @@
 import Conversation from "../models/conversation.js";
 import Message from "../models/Message.js";
+import { getReceiverId, io } from "../socket/socket.js";
 
 export const sendMessage = async(req, res) => {
     try{
@@ -30,10 +31,15 @@ export const sendMessage = async(req, res) => {
             conversation.messages.push(newMessage._id);
         }
 
-        // SOCKET IO Functionality GO HERE
-
         await Promise.all([conversation.save(), newMessage.save()]);
 
+        // SOCKET IO Functionality GO HERE
+        const receiverSockerId = getReceiverId(receiverId);
+        if(receiverSockerId){
+            // io.to().emit() is used to send the specific user to client
+            io.to(receiverSockerId).emit("newMessage", newMessage);
+        }
+        
         res.status(201).json(newMessage);
     }catch(err){
         console.log("Error in sendMessage Controller", err.message);
