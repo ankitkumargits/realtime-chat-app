@@ -3,7 +3,7 @@ import User from "../models/User.js";
 
 const middleware = async(req, res, next) => {
     try{
-        const token = res.cookies?.jwt || req.headers["auth-token"];
+        const token = req.cookies.jwt // || req.headers["auth-token"];
         if(!token){
             return res.status(401).json({error: "Unauthorized - No Token Provided"});
         }

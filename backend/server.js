@@ -6,6 +6,7 @@ import messageRoutes from "./routes/message.js";
 import userRoutes from "./routes/user.js";
 import connectToMongo from "./db/connectToMongo.js";
 import cookieParser from "cookie-parser";
+// import cors from "cors";
 
 // use npm packages
 dotenv.config();
@@ -20,6 +21,7 @@ connectToMongo();
 // use  
 app.use(express.json());
 app.use(cookieParser());
+// app.use(cors());
 
 // routes
 
